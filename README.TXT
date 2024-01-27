@@ -1,81 +1,37 @@
+终于，DOOM源代码发布了，供非盈利用途。使用此代码，你仍然需要真实的DOOM数据。如果你并没有真正拥有DOOM的一个副本，你仍然应该能够在软件商店找到它们。
 
-Here it is, at long last.  The DOOM source code is released for your
-non-profit use.  You still need real DOOM data to work with this code.
-If you don't actually own a real copy of one of the DOOMs, you should
-still be able to find them at software stores.
+非常感谢Bernd Kreimeier花时间整理这个项目，确保它确实可用。如果你把项目放置一段时间，它往往会变得混乱，需要有人再次处理它。
 
-Many thanks to Bernd Kreimeier for taking the time to clean up the
-project and make sure that it actually works.  Projects tends to rot if
-you leave it alone for a few years, and it takes effort for someone to
-deal with it again.
+不好的消息是，这个代码只能在Linux上编译和运行。我们无法发布DOS代码，因为我们使用了一个有版权的声音库（哇，那真是一个错误 -- 现在我编写自己的声音代码了），而且我甚至不知道微软为Windows做的那个移植到底发生了什么事。
 
-The bad news:  this code only compiles and runs on linux.  We couldn't
-release the dos code because of a copyrighted sound library we used
-(wow, was that a mistake -- I write my own sound code now), and I
-honestly don't even know what happened to the port that microsoft did
-to windows.
+不过，这份代码相当可移植，几乎可以在任何平台上直接使用。
 
-Still, the code is quite portable, and it should be straightforward to
-bring it up on just about any platform.
+我写下这段代码很久以前，回顾起来有很多事情似乎显得很傻（使用极坐标进行裁剪就是其中之一），但总体而言，它仍然是一个可以进行实验和建设的有用基础。
 
-I wrote this code a long, long time ago, and there are plenty of things
-that seem downright silly in retrospect (using polar coordinates for
-clipping comes to mind), but overall it should still be a usefull base
-to experiment and build on.
+基本的渲染概念 -- 以恒定Z的水平和垂直线为基础，每个带有固定光照的线条都是正确的，但如果重新审视原始代码，实现可以从根本上改进。渲染从墙到地板再到精灵的过程可以合并成对bsp树的单一的自底向上遍历，以收集信息，然后在回溯时绘制子扇区的所有内容。这需要将地板和天花板视为多边形，而不仅仅是墙之间的空隙，并且需要将精灵广告牌裁剪成子扇区片段，但这将是正确的做法。
 
-The basic rendering concept -- horizontal and vertical lines of constant
-Z with fixed light shading per band was dead-on, but the implementation
-could be improved dramatically from the original code if it were
-revisited.  The way the rendering proceded from walls to floors to
-sprites could be collapsed into a single front-to-back walk of the bsp
-tree to collect information, then draw all the contents of a subsector
-on the way back up the tree.  It requires treating floors and ceilings
-as polygons, rather than just the gaps between walls, and it requires
-clipping sprite billboards into subsector fragments, but it would be
-The Right Thing.
+回顾中，我看到移动和对线的视线检查是其中一个较大的失误之一。这是一段混乱的代码，有一些失败的情况，而在我面前有一个明显更简单（而且更快）的解决方案。我使用BSP树来渲染物体，但当时我并没有意识到它也可以用于环境测试。用BSP线剪辑替换视线测试将会相当容易。对移动进行体积扫描变得有点困难，并且涉及到与多面体边缘倒角相关的Quake / Quake2中的许多挑战。
 
-The movement and line of sight checking against the lines is one of the
-bigger misses that I look back on.  It is messy code that had some
-failure cases, and there was a vastly simpler (and faster) solution
-sitting in front of my face.  I used the BSP tree for rendering things,
-but I didn't realize at the time that it could also be used for
-environment testing.  Replacing the line of sight test with a bsp line
-clip would be pretty easy.  Sweeping volumes for movement gets a bit
-tougher, and touches on many of the challenges faced in quake / quake2
-with edge bevels on polyhedrons.
+一些建议：
 
-Some project ideas:
+1. 将其移植到你喜欢的操作系统。
 
-Port it to your favorite operating system.
+2. 添加一些渲染功能 -- 透明度、上下查看、坡度等。
 
-Add some rendering features -- transparency, look up / down, slopes,
-etc.
+3. 添加一些游戏功能 -- 武器、跳跃、蹲伏、飞行等。
 
-Add some game features -- weapons, jumping, ducking, flying, etc.
+4. 创建一个基于数据包服务器的互联网游戏。
 
-Create a packet server based internet game.
+5. 创建一个基于客户端/服务器的互联网游戏。
 
-Create a client / server based internet game.
+6. 制作一个3D加速版本。在现代硬件上（快速的Pentium + 3DFX），你可能甚至不需要太聪明 -- 你可以直接绘制整个关卡并获得合理的速度。稍加努力，它应该很容易锁定在60 fps（好吧，DOOM的35 Hz时间基准存在一些问题...）。最大的问题可能是非二次幂的纹理大小和由多个纹理组成的墙壁。
 
-Do a 3D accelerated version.  On modern hardware (fast pentium + 3DFX)
-you probably wouldn't even need to be clever -- you could just draw the
-entire level and get reasonable speed.  With a touch of effort, it should
-easily lock at 60 fps (well, there are some issues with DOOM's 35 hz
-timebase...).  The biggest issues would probably be the non-power of two
-texture sizes and the walls composed of multiple textures.
+我不太清楚会有多少人会玩这个，但如果有人着手进行重要的项目，看到社区合作的水平将是很酷的。我知道大多数早期的项目都会是在孤立中完成的初步尝试，但我会很高兴看到明年在多个平台上发布的改进的、向后兼容的DOOM版本的协调的“网络发布”。
 
-
-I don't have a real good guess at how many people are going to be
-playing with this, but if significant projects are undertaken, it would
-be cool to see a level of community cooperation.  I know that most early
-projects are going to be rough hacks done in isolation, but I would be
-very pleased to see a coordinated 'net release of an improved, backwards
-compatable version of DOOM on multiple platforms next year.
-
-Have fun.
+玩得开心。
 
 John Carmack
-12-23-97
+1997年12月23日
 
-Copyright (c) ZeniMax Media Inc.
-Licensed under the GNU General Public License 2.0.
+版权所有（c）ZeniMax Media Inc.
+根据GNU通用公共许可证2.0许可。
