@@ -1,222 +1,188 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs样式的模式选择   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
 //
-// Copyright (C) 1993-1996 by id Software, Inc.
+// 版权所有 (C) 1993-1996，id Software，Inc。
 //
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
+// 本源码仅在DOOM源代码许可下可用于分发和/或修改，
+// 该许可由id Software发布。保留所有权利。
 //
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-// 	The status bar widget code.
+// 描述：
+// 	状态栏小部件代码。
 //
 //-----------------------------------------------------------------------------
 
 #ifndef __STLIB__
 #define __STLIB__
 
-
-// We are referring to patches.
+// 我们在引用patches。
 #include "r_defs.h"
 
-
 //
-// Background and foreground screen numbers
+// 背景和前景屏幕编号
 //
 #define BG 4
 #define FG 0
 
-
-
 //
-// Typedefs of widgets
+// 小部件的typedef
 //
 
-// Number widget
-
+// 数字小部件
 typedef struct
 {
-    // upper right-hand corner
-    //  of the number (right-justified)
-    int		x;
-    int		y;
+    // 右上角数字的位置（右对齐）
+    int x;
+    int y;
 
-    // max # of digits in number
-    int width;    
+    // 数字中的最大位数
+    int width;
 
-    // last number value
-    int		oldnum;
-    
-    // pointer to current value
-    int*	num;
+    // 上一个数字值
+    int oldnum;
 
-    // pointer to boolean stating
-    //  whether to update number
-    boolean*	on;
+    // 指向当前值的指针
+    int* num;
 
-    // list of patches for 0-9
-    patch_t**	p;
+    // 指向布尔值的指针，表示是否更新数字
+    boolean* on;
 
-    // user data
+    // 0-9的贴图列表
+    patch_t** p;
+
+    // 用户数据
     int data;
-    
+
 } st_number_t;
 
-
-
-// Percent widget ("child" of number widget,
-//  or, more precisely, contains a number widget.)
+// 百分比小部件（数字小部件的“子”部件，
+// 更确切地说，包含数字小部件。）
 typedef struct
 {
-    // number information
-    st_number_t		n;
+    // 数字信息
+    st_number_t n;
 
-    // percent sign graphic
-    patch_t*		p;
-    
+    // 百分号图形
+    patch_t* p;
+
 } st_percent_t;
 
-
-
-// Multiple Icon widget
+// 多图标小部件
 typedef struct
 {
-     // center-justified location of icons
-    int			x;
-    int			y;
+    // 图标的中心对齐位置
+    int x;
+    int y;
 
-    // last icon number
-    int			oldinum;
+    // 上一个图标编号
+    int oldinum;
 
-    // pointer to current icon
-    int*		inum;
+    // 指向当前图标的指针
+    int* inum;
 
-    // pointer to boolean stating
-    //  whether to update icon
-    boolean*		on;
+    // 指向布尔值的指针，表示是否更新图标
+    boolean* on;
 
-    // list of icons
-    patch_t**		p;
-    
-    // user data
-    int			data;
-    
+    // 图标列表
+    patch_t** p;
+
+    // 用户数据
+    int data;
+
 } st_multicon_t;
 
-
-
-
-// Binary Icon widget
-
+// 二进制图标小部件
 typedef struct
 {
-    // center-justified location of icon
-    int			x;
-    int			y;
+    // 图标的中心对齐位置
+    int x;
+    int y;
 
-    // last icon value
-    int			oldval;
+    // 上一个图标值
+    int oldval;
 
-    // pointer to current icon status
-    boolean*		val;
+    // 指向当前图标状态的指针
+    boolean* val;
 
-    // pointer to boolean
-    //  stating whether to update icon
-    boolean*		on;  
+    // 指向布尔值的指针，表示是否更新图标
+    boolean* on;
 
+    patch_t* p; // 图标
+    int data;   // 用户数据
 
-    patch_t*		p;	// icon
-    int			data;   // user data
-    
 } st_binicon_t;
 
-
-
 //
-// Widget creation, access, and update routines
+// 小部件的创建、访问和更新例程
 //
 
-// Initializes widget library.
-// More precisely, initialize STMINUS,
-//  everything else is done somewhere else.
-//
+// 初始化小部件库。
+// 更确切地说，初始化STMINUS，
+// 其他所有都是在其他地方完成的。
 void STlib_init(void);
 
-
-
-// Number widget routines
+// 数字小部件例程
 void
 STlib_initNum
-( st_number_t*		n,
-  int			x,
-  int			y,
-  patch_t**		pl,
-  int*			num,
-  boolean*		on,
-  int			width );
+( st_number_t* n,
+  int x,
+  int y,
+  patch_t** pl,
+  int* num,
+  boolean* on,
+  int width );
 
 void
 STlib_updateNum
-( st_number_t*		n,
-  boolean		refresh );
+( st_number_t* n,
+  boolean refresh );
 
-
-// Percent widget routines
+// 百分比小部件例程
 void
 STlib_initPercent
-( st_percent_t*		p,
-  int			x,
-  int			y,
-  patch_t**		pl,
-  int*			num,
-  boolean*		on,
-  patch_t*		percent );
-
+( st_percent_t* p,
+  int x,
+  int y,
+  patch_t** pl,
+  int* num,
+  boolean* on,
+  patch_t* percent );
 
 void
 STlib_updatePercent
-( st_percent_t*		per,
-  int			refresh );
+( st_percent_t* per,
+  int refresh );
 
-
-// Multiple Icon widget routines
+// 多图标小部件例程
 void
 STlib_initMultIcon
-( st_multicon_t*	mi,
-  int			x,
-  int			y,
-  patch_t**		il,
-  int*			inum,
-  boolean*		on );
-
+( st_multicon_t* mi,
+  int x,
+  int y,
+  patch_t** il,
+  int* inum,
+  boolean* on );
 
 void
 STlib_updateMultIcon
-( st_multicon_t*	mi,
-  boolean		refresh );
+( st_multicon_t* mi,
+  boolean refresh );
 
-// Binary Icon widget routines
-
+// 二进制图标小部件例程
 void
 STlib_initBinIcon
-( st_binicon_t*		b,
-  int			x,
-  int			y,
-  patch_t*		i,
-  boolean*		val,
-  boolean*		on );
+( st_binicon_t* b,
+  int x,
+  int y,
+  patch_t* i,
+  boolean* val,
+  boolean* on );
 
 void
 STlib_updateBinIcon
-( st_binicon_t*		bi,
-  boolean		refresh );
+( st_binicon_t* bi,
+  boolean refresh );
 
 #endif
 //-----------------------------------------------------------------------------
