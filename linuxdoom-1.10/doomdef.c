@@ -1,24 +1,19 @@
-// Emacs style mode select   -*- C++ -*- 
+// 这段代码主要是包含了一些关于版本信息、源代码许可协议、以及一些头文件的定义。注释提供了对代码整体结构和目的的概述。
+// Emacs风格的模式选择   -*- C++ -*- 
 //-----------------------------------------------------------------------------
 //
 // $Id:$
 //
-// Copyright (C) 1993-1996 by id Software, Inc.
+// 版权所有 (C) 1993-1996 由id Software，Inc.提供。
 //
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
-//
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
+// 本源代码仅在DOOM源代码许可协议规定的条件下可用于分发和/或修改，
+// 该协议由id Software发布。保留所有权利。
 //
 // $Log:$
 //
-// DESCRIPTION:
-//  DoomDef - basic defines for DOOM, e.g. Version, game mode
-//   and skill level, and display parameters.
+// 描述：
+//  DoomDef - DOOM的基本定义，例如版本、游戏模式
+//   和技能级别，以及显示参数。
 //
 //-----------------------------------------------------------------------------
 
@@ -31,8 +26,6 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #endif
 #include "doomdef.h"
 
-// Location for any defines turned variables.
+// 用于存放任何定义转换为变量的位置。
 
-// None.
-
-
+// 没有。
