@@ -1,22 +1,15 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs风格的模式选择   -*- C++ -*- 
 //-----------------------------------------------------------------------------
 //
 // $Id:$
 //
-// Copyright (C) 1993-1996 by id Software, Inc.
+// 版权所有 (C) 1993-1996 由id Software，Inc.提供。
 //
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
+// 本源代码仅在DOOM源代码许可协议规定的条件下可用于分发和/或修改，
+// 该协议由id Software发布。保留所有权利。
 //
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-//  Internally used data structures for virtually everything,
-//   key definitions, lots of other stuff.
+// 描述：
+//  用于几乎所有内部数据结构的内部使用，包括密钥定义等等。
 //
 //-----------------------------------------------------------------------------
 
@@ -27,39 +20,36 @@
 #include <string.h>
 
 //
-// Global parameters/defines.
+// 全局参数/定义。
 //
-// DOOM version
+// DOOM版本
 enum { VERSION =  110 };
 
-
-// Game mode handling - identify IWAD version
-//  to handle IWAD dependend animations etc.
+// 游戏模式处理 - 识别IWAD版本
+// 以处理IWAD相关的动画等。
 typedef enum
 {
-  shareware,	// DOOM 1 shareware, E1, M9
-  registered,	// DOOM 1 registered, E3, M27
-  commercial,	// DOOM 2 retail, E1 M34
-  // DOOM 2 german edition not handled
-  retail,	// DOOM 1 retail, E4, M36
-  indetermined	// Well, no IWAD found.
+  shareware,  // DOOM 1共享版，E1，M9
+  registered, // DOOM 1注册版，E3，M27
+  commercial, // DOOM 2零售版，E1 M34
+  // DOOM 2德国版未处理
+  retail, // DOOM 1零售版，E4，M36
+  indetermined // 嗯，未找到IWAD。
   
 } GameMode_t;
 
-
-// Mission packs - might be useful for TC stuff?
+// 任务包 - 对于TC项目可能有用？
 typedef enum
 {
-  doom,		// DOOM 1
-  doom2,	// DOOM 2
-  pack_tnt,	// TNT mission pack
-  pack_plut,	// Plutonia pack
+  doom,       // DOOM 1
+  doom2,      // DOOM 2
+  pack_tnt,   // TNT任务包
+  pack_plut,  // Plutonia任务包
   none
 
 } GameMission_t;
 
-
-// Identify language to use, software localization.
+// 识别使用的语言，软件本地化。
 typedef enum
 {
   english,
@@ -69,61 +59,53 @@ typedef enum
 
 } Language_t;
 
-
-// If rangecheck is undefined,
-// most parameter validation debugging code will not be compiled
+// 如果rangecheck未定义，
+// 大多数参数验证调试代码将不会被编译
 #define RANGECHECK
 
-// Do or do not use external soundserver.
-// The sndserver binary to be run separately
-//  has been introduced by Dave Taylor.
-// The integrated sound support is experimental,
-//  and unfinished. Default is synchronous.
-// Experimental asynchronous timer based is
-//  handled by SNDINTR. 
+// 是否使用外部声音服务器。
+// 需要分别运行的sndserver二进制文件
+// 由Dave Taylor引入。集成的声音支持是实验性的，
+// 且未完成。默认是同步的。
+// 实验性的基于定时器的异步处理由SNDINTR处理。
 #define SNDSERV  1
 //#define SNDINTR  1
 
-
-// This one switches between MIT SHM (no proper mouse)
-// and XFree86 DGA (mickey sampling). The original
-// linuxdoom used SHM, which is default.
-//#define X11_DGA		1
-
+// 这个开关在MIT SHM（没有适当的鼠标）
+// 和XFree86 DGA（鼠标采样）之间切换。最初的
+// linuxdoom使用了SHM，这是默认值。
+//#define X11_DGA 1
 
 //
-// For resize of screen, at start of game.
-// It will not work dynamically, see visplanes.
+// 用于在游戏开始时调整屏幕大小。
+// 它将不能动态工作，请参阅visplanes。
 //
-#define	BASE_WIDTH		320
+#define BASE_WIDTH      320
 
-// It is educational but futile to change this
-//  scaling e.g. to 2. Drawing of status bar,
-//  menues etc. is tied to the scale implied
-//  by the graphics.
-#define	SCREEN_MUL		1
-#define	INV_ASPECT_RATIO	0.625 // 0.75, ideally
+// 这是教育性的但徒劳的改变
+// 比例，例如改为2。状态栏的绘制，
+// 菜单等与图形隐含的比例相关联
+// 由图形确定。
+#define SCREEN_MUL      1
+#define INV_ASPECT_RATIO 0.625 // 0.75，理想情况下
 
-// Defines suck. C sucks.
-// C++ might sucks for OOP, but it sure is a better C.
-// So there.
+// 定义很差。C很差。
+// C++可能对OOP来说不好，但它肯定比C更好。
+// 所以。
 #define SCREENWIDTH  320
 //SCREEN_MUL*BASE_WIDTH //320
 #define SCREENHEIGHT 200
 //(int)(SCREEN_MUL*BASE_WIDTH*INV_ASPECT_RATIO) //200
 
+// 多人游戏/网络的最大玩家数。
+#define MAXPLAYERS      4
 
+// 状态更新，每秒的tics数。
+#define TICRATE        35
 
-
-// The maximum number of players, multiplayer/networking.
-#define MAXPLAYERS		4
-
-// State updates, number of tics / second.
-#define TICRATE		35
-
-// The current state of the game: whether we are
-// playing, gazing at the intermission screen,
-// the game final animation, or a demo. 
+// 游戏的当前状态：我们是否
+// 在玩，看插曲屏幕，
+// 游戏最终动画，或演示。
 typedef enum
 {
     GS_LEVEL,
@@ -133,16 +115,16 @@ typedef enum
 } gamestate_t;
 
 //
-// Difficulty/skill settings/filters.
+// 难度/技能设置/过滤器。
 //
 
-// Skill flags.
-#define	MTF_EASY		1
-#define	MTF_NORMAL		2
-#define	MTF_HARD		4
+// 技能标志。
+#define MTF_EASY        1
+#define MTF_NORMAL      2
+#define MTF_HARD        4
 
-// Deaf monsters/do not react to sound.
-#define	MTF_AMBUSH		8
+// 聋子怪物/不对声音做出反应。
+#define MTF_AMBUSH      8
 
 typedef enum
 {
@@ -153,11 +135,8 @@ typedef enum
     sk_nightmare
 } skill_t;
 
-
-
-
 //
-// Key cards.
+// 钥匙卡。
 //
 typedef enum
 {
@@ -172,11 +151,8 @@ typedef enum
     
 } card_t;
 
-
-
-// The defined weapons,
-//  including a marker indicating
-//  user has not changed weapon.
+// 定义的武器，
+// 包括指示用户未更改武器的标记。
 typedef enum
 {
     wp_fist,
@@ -191,26 +167,23 @@ typedef enum
 
     NUMWEAPONS,
     
-    // No pending weapon change.
+    // 没有挂起的武器更改。
     wp_nochange
 
 } weapontype_t;
 
-
-// Ammunition types defined.
+// 定义的弹药类型。
 typedef enum
 {
-    am_clip,	// Pistol / chaingun ammo.
-    am_shell,	// Shotgun / double barreled shotgun.
-    am_cell,	// Plasma rifle, BFG.
-    am_misl,	// Missile launcher.
+    am_clip,    // 手枪/链枪弹药。
+    am_shell,   // 霰弹枪/双管霰弹枪。
+    am_cell,    // 等离子枪，BFG。
+    am_misl,    // 导弹发射器。
     NUMAMMO,
-    am_noammo	// Unlimited for chainsaw / fist.	
-
+    am_noammo   // 链锯/拳头无限。
 } ammotype_t;
 
-
-// Power up artifacts.
+// 强化物品。
 typedef enum
 {
     pw_invulnerability,
@@ -220,115 +193,98 @@ typedef enum
     pw_allmap,
     pw_infrared,
     NUMPOWERS
-    
 } powertype_t;
 
-
-
 //
-// Power up durations,
-//  how many seconds till expiration,
-//  assuming TICRATE is 35 ticks/second.
+// 强化物品持续时间，
+// 到期的秒数，
+// 假设 TICRATE 是每秒 35 次。
 //
 typedef enum
 {
-    INVULNTICS	= (30*TICRATE),
-    INVISTICS	= (60*TICRATE),
-    INFRATICS	= (120*TICRATE),
-    IRONTICS	= (60*TICRATE)
-    
+    INVULNTICS  = (30*TICRATE),
+    INVISTICS   = (60*TICRATE),
+    INFRATICS   = (120*TICRATE),
+    IRONTICS    = (60*TICRATE)
 } powerduration_t;
 
-
-
-
 //
-// DOOM keyboard definition.
-// This is the stuff configured by Setup.Exe.
-// Most key data are simple ascii (uppercased).
+// DOOM键盘定义。
+// 这是由Setup.Exe配置的东西。
+// 大多数键数据都是简单的ascii（大写）。
 //
-#define KEY_RIGHTARROW	0xae
-#define KEY_LEFTARROW	0xac
-#define KEY_UPARROW	0xad
-#define KEY_DOWNARROW	0xaf
-#define KEY_ESCAPE	27
-#define KEY_ENTER	13
-#define KEY_TAB		9
-#define KEY_F1		(0x80+0x3b)
-#define KEY_F2		(0x80+0x3c)
-#define KEY_F3		(0x80+0x3d)
-#define KEY_F4		(0x80+0x3e)
-#define KEY_F5		(0x80+0x3f)
-#define KEY_F6		(0x80+0x40)
-#define KEY_F7		(0x80+0x41)
-#define KEY_F8		(0x80+0x42)
-#define KEY_F9		(0x80+0x43)
-#define KEY_F10		(0x80+0x44)
-#define KEY_F11		(0x80+0x57)
-#define KEY_F12		(0x80+0x58)
+#define KEY_RIGHTARROW  0xae
+#define KEY_LEFTARROW   0xac
+#define KEY_UPARROW     0xad
+#define KEY_DOWNARROW   0xaf
+#define KEY_ESCAPE      27
+#define KEY_ENTER       13
+#define KEY_TAB         9
+#define KEY_F1          (0x80+0x3b)
+#define KEY_F2          (0x80+0x3c)
+#define KEY_F3          (0x80+0x3d)
+#define KEY_F4          (0x80+0x3e)
+#define KEY_F5          (0x80+0x3f)
+#define KEY_F6          (0x80+0x40)
+#define KEY_F7          (0x80+0x41)
+#define KEY_F8          (0x80+0x42)
+#define KEY_F9          (0x80+0x43)
+#define KEY_F10         (0x80+0x44)
+#define KEY_F11         (0x80+0x57)
+#define KEY_F12         (0x80+0x58)
 
-#define KEY_BACKSPACE	127
-#define KEY_PAUSE	0xff
+#define KEY_BACKSPACE   127
+#define KEY_PAUSE       0xff
 
-#define KEY_EQUALS	0x3d
-#define KEY_MINUS	0x2d
+#define KEY_EQUALS      0x3d
+#define KEY_MINUS       0x2d
 
-#define KEY_RSHIFT	(0x80+0x36)
-#define KEY_RCTRL	(0x80+0x1d)
-#define KEY_RALT	(0x80+0x38)
+#define KEY_RSHIFT      (0x80+0x36)
+#define KEY_RCTRL       (0x80+0x1d)
+#define KEY_RALT        (0x80+0x38)
 
-#define KEY_LALT	KEY_RALT
+#define KEY_LALT        KEY_RALT
 
-
-
-// DOOM basic types (boolean),
-//  and max/min values.
+// DOOM基本类型（布尔值），
+// 以及最大/最小值。
 //#include "doomtype.h"
 
-// Fixed point.
+// 固定点。
 //#include "m_fixed.h"
 
-// Endianess handling.
+// 字节序处理。
 //#include "m_swap.h"
 
-
-// Binary Angles, sine/cosine/atan lookups.
+// 二进制角度，正弦/余弦/反正切查找。
 //#include "tables.h"
 
-// Event type.
+// 事件类型。
 //#include "d_event.h"
 
-// Game function, skills.
+// 游戏功能，技能。
 //#include "g_game.h"
 
-// All external data is defined here.
+// 所有外部数据都在这里定义。
 //#include "doomdata.h"
 
-// All important printed strings.
-// Language selection (message strings).
+// 所有重要的打印字符串。
+// 语言选择（消息字符串）。
 //#include "dstrings.h"
 
-// Player is a special actor.
+// Player是一个特殊的演员。
 //struct player_s;
-
-
+//
 //#include "d_items.h"
 //#include "d_player.h"
 //#include "p_mobj.h"
 //#include "d_net.h"
-
+//
 // PLAY
 //#include "p_tick.h"
-
-
-
-
-// Header, generated by sound utility.
-// The utility was written by Dave Taylor.
+//
+// Header，由声音实用程序生成。
+// 该实用程序由Dave Taylor编写。
 //#include "sounds.h"
-
-
-
 
 #endif          // __DOOMDEF__
 //-----------------------------------------------------------------------------
