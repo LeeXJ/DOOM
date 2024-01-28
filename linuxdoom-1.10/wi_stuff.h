@@ -1,21 +1,24 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs样式的模式选择   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
 //
-// Copyright (C) 1993-1996 by id Software, Inc.
+// 版权所有 (C) 1993-1996，id Software，Inc。
 //
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
+// 本源码仅在DOOM源代码许可下可用于分发和/或修改，
+// 该许可由id Software发布。保留所有权利。
 //
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
+// 该源码被分发，希望它会有用，
+// 但是没有任何保证；甚至没有适用于特定目的的暗示的保证。
+// 有关更多详细信息，请参阅DOOM源代码许可。
 //
-// DESCRIPTION:
-//  Intermission.
+// 描述：
+//  互动画面。
+//
+// 整体概述：
+//  本文件包含有关互动画面的定义和功能。互动画面用于在游戏过程中显示
+//  某些信息，执行动画效果或提供玩家与游戏交互的场面。代码包括了互动
+//  画面的状态枚举、主循环调用的函数、以及互动画面的设置功能。
 //
 //-----------------------------------------------------------------------------
 
@@ -26,25 +29,24 @@
 
 #include "doomdef.h"
 
-// States for the intermission
-
+// 互动画面的状态
 typedef enum
 {
-    NoState = -1,
-    StatCount,
-    ShowNextLoc
+    NoState = -1,   // 无状态
+    StatCount,      // 计数状态
+    ShowNextLoc     // 显示下一个位置状态
 
 } stateenum_t;
 
-// Called by main loop, animate the intermission.
-void WI_Ticker (void);
+// 由主循环调用，用于动画互动画面。
+void WI_Ticker(void);
 
-// Called by main loop,
-// draws the intermission directly into the screen buffer.
-void WI_Drawer (void);
+// 由主循环调用，
+// 直接在屏幕缓冲区中绘制互动画面。
+void WI_Drawer(void);
 
-// Setup for an intermission screen.
-void WI_Start(wbstartstruct_t*	 wbstartstruct);
+// 互动画面的设置。
+void WI_Start(wbstartstruct_t* wbstartstruct);
 
 #endif
 //-----------------------------------------------------------------------------
