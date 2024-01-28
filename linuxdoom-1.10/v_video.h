@@ -1,26 +1,19 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs样式的模式选择   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
 //
-// Copyright (C) 1993-1996 by id Software, Inc.
+// 版权所有 (C) 1993-1996，id Software，Inc。
 //
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
+// 本源码仅在DOOM源代码许可下可用于分发和/或修改，
+// 该许可由id Software发布。保留所有权利。
 //
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-//	Gamma correction LUT.
-//	Functions to draw patches (by post) directly to screen.
-//	Functions to blit a block to the screen.
+// 描述：
+//	Gamma校正查找表（LUT）。
+//	直接向屏幕绘制补丁的功能（通过post）。
+//	将块复制到屏幕的功能。
 //
 //-----------------------------------------------------------------------------
-
 
 #ifndef __V_VIDEO__
 #define __V_VIDEO__
@@ -29,7 +22,7 @@
 
 #include "doomdef.h"
 
-// Needed because we are refering to patches.
+// 因为我们引用了patches，所以需要包含。
 #include "r_data.h"
 
 //
@@ -39,77 +32,34 @@
 #define CENTERY			(SCREENHEIGHT/2)
 
 
-// Screen 0 is the screen updated by I_Update screen.
-// Screen 1 is an extra buffer.
+// 屏幕0是由I_Update screen更新的屏幕。
+// 屏幕1是一个额外的缓冲区。
 
+extern byte* screens[5];     // 屏幕缓冲区数组，可以有多个屏幕
+extern int dirtybox[4];      // 脏矩形的坐标 [x, y, width, height]
+extern byte gammatable[5][256]; // Gamma校正查找表，用于颜色校正
+extern int usegamma;          // 是否使用Gamma校正
 
+// 分配缓冲屏幕，必须在R_Init之前调用。
+void V_Init(void);
 
-extern	byte*		screens[5];
+// 复制矩形区域
+void V_CopyRect(int srcx, int srcy, int srcscrn, int width, int height, int destx, int desty, int destscrn);
 
-extern  int	dirtybox[4];
+// 绘制贴图补丁到屏幕
+void V_DrawPatch(int x, int y, int scrn, patch_t* patch);
 
-extern	byte	gammatable[5][256];
-extern	int	usegamma;
+// 直接绘制贴图补丁到屏幕
+void V_DrawPatchDirect(int x, int y, int scrn, patch_t* patch);
 
+// 绘制线性像素块到视图缓冲区
+void V_DrawBlock(int x, int y, int scrn, int width, int height, byte* src);
 
+// 从视图缓冲区读取线性像素块
+void V_GetBlock(int x, int y, int scrn, int width, int height, byte* dest);
 
-// Allocates buffer screens, call before R_Init.
-void V_Init (void);
-
-
-void
-V_CopyRect
-( int		srcx,
-  int		srcy,
-  int		srcscrn,
-  int		width,
-  int		height,
-  int		destx,
-  int		desty,
-  int		destscrn );
-
-void
-V_DrawPatch
-( int		x,
-  int		y,
-  int		scrn,
-  patch_t*	patch);
-
-void
-V_DrawPatchDirect
-( int		x,
-  int		y,
-  int		scrn,
-  patch_t*	patch );
-
-
-// Draw a linear block of pixels into the view buffer.
-void
-V_DrawBlock
-( int		x,
-  int		y,
-  int		scrn,
-  int		width,
-  int		height,
-  byte*		src );
-
-// Reads a linear block of pixels into the view buffer.
-void
-V_GetBlock
-( int		x,
-  int		y,
-  int		scrn,
-  int		width,
-  int		height,
-  byte*		dest );
-
-
-void
-V_MarkRect
-( int		x,
-  int		y,
-  int		width,
-  int		height );
+// 标记矩形区域为脏矩形
+void V_MarkRect(int x, int y, int width, int height);
 
 #endif
 //-----------------------------------------------------------------------------
