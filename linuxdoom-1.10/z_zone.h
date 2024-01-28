@@ -1,24 +1,18 @@
-// Emacs style mode select   -*- C++ -*- 
+// 这段代码是关于Zone Memory Allocation（内存分配）的实现，可能受到了NeXT ObjectiveC的启发。
+// 这段代码实现了一套内存分配和释放的机制，包含了一些用于标记和控制内存的宏定义和函数。注释提供了对代码整体结构和目的的概述。
+// Emacs风格的模式选择   -*- C++ -*- 
 //-----------------------------------------------------------------------------
 //
 // $Id:$
 //
-// Copyright (C) 1993-1996 by id Software, Inc.
+// 版权所有 (C) 1993-1996 由id Software，Inc.提供。
 //
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
+// 本源代码仅在DOOM源代码许可协议规定的条件下可用于分发和/或修改，
+// 该协议由id Software发布。保留所有权利。
 //
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-//      Zone Memory Allocation, perhaps NeXT ObjectiveC inspired.
-//	Remark: this was the only stuff that, according
-//	 to John Carmack, might have been useful for
-//	 Quake.
+// 描述：
+//      区域内存分配，可能受到了NeXT ObjectiveC的启发。
+//	备注：根据John Carmack的说法，这可能是唯一对Quake有用的东西。
 //
 //---------------------------------------------------------------------
 
@@ -31,15 +25,15 @@
 
 //
 // ZONE MEMORY
-// PU - purge tags.
-// Tags < 100 are not overwritten until freed.
-#define PU_STATIC		1	// static entire execution time
-#define PU_SOUND		2	// static while playing
-#define PU_MUSIC		3	// static while playing
-#define PU_DAVE		4	// anything else Dave wants static
-#define PU_LEVEL		50	// static until level exited
-#define PU_LEVSPEC		51      // a special thinker in a level
-// Tags >= 100 are purgable whenever needed.
+// PU - 清除标签。
+// 标签<100的内容直到释放时都不会被覆盖。
+#define PU_STATIC		1	// 整个执行时间都是静态的
+#define PU_SOUND		2	// 在播放时是静态的
+#define PU_MUSIC		3	// 在播放时是静态的
+#define PU_DAVE		4	// Dave想要的任何其他静态的
+#define PU_LEVEL		50	// 直到退出关卡都是静态的
+#define PU_LEVSPEC		51      // 关卡中的特殊处理器
+// 标签>=100的内容在需要时可以被清除。
 #define PU_PURGELEVEL	100
 #define PU_CACHE		101
 
@@ -57,17 +51,16 @@ int     Z_FreeMemory (void);
 
 typedef struct memblock_s
 {
-    int			size;	// including the header and possibly tiny fragments
-    void**		user;	// NULL if a free block
-    int			tag;	// purgelevel
-    int			id;	// should be ZONEID
+    int			size;	// 包括头部和可能的微小片段
+    void**		user;	// 如果是空闲块，则为NULL
+    int			tag;	// 清除级别
+    int			id;	// 应为ZONEID
     struct memblock_s*	next;
     struct memblock_s*	prev;
 } memblock_t;
 
 //
-// This is used to get the local FILE:LINE info from CPP
-// prior to really call the function in question.
+// 这用于在实际调用相关函数之前，从CPP中获取本地的FILE:LINE信息。
 //
 #define Z_ChangeTag(p,t) \
 { \
