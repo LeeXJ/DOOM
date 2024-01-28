@@ -1,85 +1,90 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs样式的模式选择   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
 //
-// Copyright (C) 1993-1996 by id Software, Inc.
+// 版权所有 (C) 1993-1996，id Software，Inc。
 //
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
+// 本源码仅在DOOM源代码许可下可用于分发和/或修改，
+// 该许可由id Software发布。保留所有权利。
 //
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-//	WAD I/O functions.
+// 描述：
+//	WAD I/O功能。
 //
 //-----------------------------------------------------------------------------
 
-
 #ifndef __W_WAD__
 #define __W_WAD__
-
 
 #ifdef __GNUG__
 #pragma interface
 #endif
 
+//
+// 类型
+//
 
-//
-// TYPES
-//
+// WAD文件信息
 typedef struct
 {
-    // Should be "IWAD" or "PWAD".
-    char		identification[4];		
-    int			numlumps;
-    int			infotableofs;
+    char	identification[4]; // 文件标识符，应该是"IWAD"或"PWAD"
+    int		numlumps;           // WAD文件中的Lump数量
+    int		infotableofs;       // Lump信息表的偏移量
     
 } wadinfo_t;
 
-
+// Lump信息
 typedef struct
 {
-    int			filepos;
-    int			size;
-    char		name[8];
+    int		filepos;            // Lump在文件中的位置
+    int		size;               // Lump的大小
+    char	name[8];             // Lump的名称
     
 } filelump_t;
 
 //
-// WADFILE I/O related stuff.
+// WADFILE I/O相关的内容。
 //
 typedef struct
 {
-    char	name[8];
-    int		handle;
-    int		position;
-    int		size;
+    char	name[8];             // Lump的名称
+    int		handle;             // 文件句柄
+    int		position;           // 当前文件读写位置
+    int		size;               // 文件大小
 } lumpinfo_t;
 
+// Lump缓存
+extern void** lumpcache;
 
-extern	void**		lumpcache;
-extern	lumpinfo_t*	lumpinfo;
-extern	int		numlumps;
+// Lump信息数组
+extern lumpinfo_t* lumpinfo;
 
-void    W_InitMultipleFiles (char** filenames);
-void    W_Reload (void);
+// Lump数量
+extern int numlumps;
 
-int	W_CheckNumForName (char* name);
-int	W_GetNumForName (char* name);
+// 初始化多个WAD文件
+void W_InitMultipleFiles(char** filenames);
 
-int	W_LumpLength (int lump);
-void    W_ReadLump (int lump, void *dest);
+// 重新加载WAD文件
+void W_Reload(void);
 
-void*	W_CacheLumpNum (int lump, int tag);
-void*	W_CacheLumpName (char* name, int tag);
+// 检查Lump名称对应的Lump编号
+int W_CheckNumForName(char* name);
 
+// 根据Lump名称获取Lump编号
+int W_GetNumForName(char* name);
 
+// 获取指定Lump编号的Lump长度
+int W_LumpLength(int lump);
 
+// 读取指定Lump编号的数据到目标缓冲区
+void W_ReadLump(int lump, void *dest);
+
+// 缓存指定Lump编号的数据，并使用指定标签
+void* W_CacheLumpNum(int lump, int tag);
+
+// 缓存指定Lump名称的数据，并使用指定标签
+void* W_CacheLumpName(char* name, int tag);
 
 #endif
 //-----------------------------------------------------------------------------
